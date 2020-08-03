@@ -7,7 +7,8 @@ use crate::{
 };
 
 use log::{debug, info, trace};
-use rustc_hash::{FxHashMap as HashMap, FxHashSet as HashSet};
+use crate::data_structures::Map as HashMap;
+use crate::data_structures::InternalSet as HashSet;
 use smallvec::SmallVec;
 use core::fmt;
 use alloc::vec::Vec;

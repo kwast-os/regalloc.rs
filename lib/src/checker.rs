@@ -61,8 +61,8 @@ use crate::data_structures::{
 };
 use crate::inst_stream::{ExtPoint, InstExtPoint, InstToInsertAndExtPoint};
 use crate::{Function, RegUsageMapper};
+use crate::data_structures::InternalSet as FxHashSet;
 
-use rustc_hash::FxHashSet;
 use alloc::collections::VecDeque;
 use core::default::Default;
 use core::hash::Hash;

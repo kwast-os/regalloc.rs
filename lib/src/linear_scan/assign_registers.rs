@@ -9,8 +9,8 @@ use crate::{
 };
 
 use log::{debug, info, log_enabled, trace, Level};
-use rustc_hash::FxHashMap as HashMap;
 use smallvec::SmallVec;
+use crate::data_structures::Map as HashMap;
 use alloc::collections::BinaryHeap;
 use core::{cmp, cmp::Ordering, fmt};
 use alloc::vec::Vec;
