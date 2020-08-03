@@ -7,6 +7,11 @@
 //! to use this library in your own code, you would be well advised to read
 //! the comments in this file very carefully.
 
+#![no_std]
+
+#[macro_use]
+extern crate alloc;
+
 // Make the analysis module public for fuzzing.
 #[cfg(feature = "fuzzing")]
 pub mod analysis_main;
@@ -32,8 +37,12 @@ mod sparse_set;
 mod union_find;
 
 use log::{info, log_enabled, Level};
-use std::default;
-use std::{borrow::Cow, fmt};
+use core::default;
+use core::fmt;
+use alloc::borrow::Cow;
+use alloc::vec::Vec;
+use alloc::string::String;
+use crate::alloc::string::ToString;
 
 // Stuff that is defined by the library
 

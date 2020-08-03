@@ -6,9 +6,9 @@
 
 use log::{info, log_enabled, trace, Level};
 
-use std::default;
-use std::env;
-use std::fmt;
+use core::default;
+use core::fmt;
+use alloc::vec::Vec;
 
 use crate::data_structures::{BlockIx, InstIx, InstPoint, Point, RealReg, RegVecsAndBounds};
 use crate::inst_stream::{add_spills_reloads_and_moves, InstToInsertAndExtPoint};
@@ -47,7 +47,7 @@ impl Drop for Statistics {
         if self.only_large && self.num_vregs < 1000 {
             return;
         }
-        println!(
+        /*println!(
             "stats: {} fixed; {} vreg; {} vranges; {} peak-active; {} peak-inactive, {} direct-alloc; {} total-alloc; {} partial-splits; {} partial-splits-attempts",
             self.num_fixed,
             self.num_vregs,
@@ -58,7 +58,7 @@ impl Drop for Statistics {
             self.num_try_allocate_reg,
             self.num_reg_splits_success,
             self.num_reg_splits,
-        );
+        );*/
     }
 }
 
@@ -88,7 +88,7 @@ pub struct LinearScanOptions {
 impl default::Default for LinearScanOptions {
     fn default() -> Self {
         // Useful for debugging.
-        let optimal_split_strategy = match env::var("LSRA_SPLIT") {
+        /*let optimal_split_strategy = match env::var("LSRA_SPLIT") {
             Ok(s) => match s.as_str() {
                 "t" | "to" => OptimalSplitStrategy::To,
                 "n" => OptimalSplitStrategy::NextFrom,
@@ -99,13 +99,14 @@ impl default::Default for LinearScanOptions {
                 _ => OptimalSplitStrategy::From,
             },
             Err(_) => OptimalSplitStrategy::From,
-        };
+        };*/
+        let optimal_split_strategy = OptimalSplitStrategy::From;
 
-        let large_stats = env::var("LSRA_LARGE_STATS").is_ok();
-        let stats = env::var("LSRA_STATS").is_ok() || large_stats;
+        let large_stats = false; //env::var("LSRA_LARGE_STATS").is_ok();
+        let stats = false; //env::var("LSRA_STATS").is_ok() || large_stats;
 
-        let partial_split = env::var("LSRA_PARTIAL").is_ok();
-        let partial_split_near_end = env::var("LSRA_PARTIAL_END").is_ok();
+        let partial_split = true; //env::var("LSRA_PARTIAL").is_ok();
+        let partial_split_near_end = true; //env::var("LSRA_PARTIAL_END").is_ok();
 
         Self {
             split_strategy: optimal_split_strategy,

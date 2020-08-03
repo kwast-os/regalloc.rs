@@ -7,7 +7,9 @@ use crate::data_structures::{
 use crate::{reg_maps::VrangeRegUsageMapper, Function, RegAllocError};
 use log::trace;
 
-use std::result::Result;
+use core::result::Result;
+use alloc::string::String;
+use alloc::vec::Vec;
 
 //=============================================================================
 // InstToInsert and InstToInsertAndPoint

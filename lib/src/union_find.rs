@@ -4,7 +4,8 @@
 //! An implementation of a fast union-find implementation for "T: ToFromU32" items
 //! in some dense range [0, N-1].
 
-use std::marker::PhantomData;
+use core::marker::PhantomData;
+use alloc::vec::Vec;
 
 //=============================================================================
 // ToFromU32

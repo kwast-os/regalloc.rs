@@ -7,6 +7,7 @@ use crate::data_structures::{
 use crate::sparse_set::SparseSet;
 
 use log::debug;
+use alloc::vec::Vec;
 
 pub fn do_reftypes_analysis(
     // From dataflow/liveness analysis.  Modified by setting their is_ref bit.

@@ -12,7 +12,8 @@ use crate::{
 };
 use log::{debug, info, log_enabled, Level};
 use smallvec::{smallvec, SmallVec};
-use std::{fmt, mem};
+use core::{fmt, mem};
+use alloc::vec::Vec;
 
 #[derive(Clone, Hash, PartialEq, Eq, PartialOrd, Ord)]
 pub(crate) struct RangeFrag {

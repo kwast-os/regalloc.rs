@@ -63,10 +63,11 @@ use crate::inst_stream::{ExtPoint, InstExtPoint, InstToInsertAndExtPoint};
 use crate::{Function, RegUsageMapper};
 
 use rustc_hash::FxHashSet;
-use std::collections::VecDeque;
-use std::default::Default;
-use std::hash::Hash;
-use std::result::Result;
+use alloc::collections::VecDeque;
+use core::default::Default;
+use core::hash::Hash;
+use core::result::Result;
+use alloc::vec::Vec;
 
 use log::debug;
 

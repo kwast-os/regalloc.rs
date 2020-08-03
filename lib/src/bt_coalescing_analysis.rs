@@ -28,6 +28,9 @@
 
 use log::{debug, info, log_enabled, Level};
 use smallvec::{smallvec, SmallVec};
+use alloc::string::String;
+use alloc::vec::Vec;
+use crate::alloc::string::ToString;
 
 use crate::data_structures::{
     InstIx, InstPoint, MoveInfo, MoveInfoElem, RangeFrag, RangeFragIx, RealRange, RealRangeIx,

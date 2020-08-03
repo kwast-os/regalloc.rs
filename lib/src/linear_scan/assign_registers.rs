@@ -11,8 +11,9 @@ use crate::{
 use log::{debug, info, log_enabled, trace, Level};
 use rustc_hash::FxHashMap as HashMap;
 use smallvec::SmallVec;
-use std::collections::BinaryHeap;
-use std::{cmp, cmp::Ordering, fmt};
+use alloc::collections::BinaryHeap;
+use core::{cmp, cmp::Ordering, fmt};
+use alloc::vec::Vec;
 
 macro_rules! lsra_assert {
     ($arg:expr) => {
@@ -298,11 +299,11 @@ impl<T: Copy> RegisterMapping<T> {
 }
 
 struct RegisterMappingIter<'a, T: Copy> {
-    iter: std::slice::Iter<'a, (RealReg, T)>,
+    iter: core::slice::Iter<'a, (RealReg, T)>,
     scratch: Option<RealReg>,
 }
 
-impl<'a, T: Copy> std::iter::Iterator for RegisterMappingIter<'a, T> {
+impl<'a, T: Copy> core::iter::Iterator for RegisterMappingIter<'a, T> {
     type Item = &'a (RealReg, T);
     fn next(&mut self) -> Option<Self::Item> {
         match self.iter.next() {
@@ -319,7 +320,7 @@ impl<'a, T: Copy> std::iter::Iterator for RegisterMappingIter<'a, T> {
     }
 }
 
-impl<T> std::ops::Index<RealReg> for RegisterMapping<T> {
+impl<T> core::ops::Index<RealReg> for RegisterMapping<T> {
     type Output = T;
     fn index(&self, rreg: RealReg) -> &Self::Output {
         lsra_assert!(
@@ -331,7 +332,7 @@ impl<T> std::ops::Index<RealReg> for RegisterMapping<T> {
     }
 }
 
-impl<T> std::ops::IndexMut<RealReg> for RegisterMapping<T> {
+impl<T> core::ops::IndexMut<RealReg> for RegisterMapping<T> {
     fn index_mut(&mut self, rreg: RealReg) -> &mut Self::Output {
         lsra_assert!(
             rreg.get_class() as usize == self.reg_class_index,

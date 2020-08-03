@@ -9,7 +9,8 @@ use crate::{
 use log::{debug, info, trace};
 use rustc_hash::{FxHashMap as HashMap, FxHashSet as HashSet};
 use smallvec::SmallVec;
-use std::fmt;
+use core::fmt;
+use alloc::vec::Vec;
 
 fn resolve_moves_in_block<F: Function>(
     func: &F,

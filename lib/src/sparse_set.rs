@@ -4,9 +4,11 @@
 //! An implementation of sets which aims to be fast for both large sets and
 //! very small sets, even if the elements are sparse relative to the universe.
 
-use rustc_hash::FxHashSet;
-use std::fmt;
-use std::hash::Hash;
+use core::fmt;
+use core::hash::Hash;
+use alloc::vec::Vec;
+use crate::alloc::string::ToString;
+use crate::data_structures::InternalSet;
 
 //=============================================================================
 // SparseSet
@@ -41,7 +43,7 @@ impl_array!(2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 20, 24, 28, 32);
 // in `Small::arr` are in no particular order, although they are
 // duplicate-free.
 pub enum SparseSetU<A: Array> {
-    Large { set: FxHashSet<A::Item> },
+    Large { set: InternalSet<A::Item> },
     Small { card: usize, arr: MaybeUninit<A> },
 }
 
@@ -69,7 +71,7 @@ where
             SparseSetU::Large { .. } => panic!("SparseSetU: upgrade"),
             SparseSetU::Small { card, arr } => {
                 assert!(*card == A::size());
-                let mut set = FxHashSet::<A::Item>::default();
+                let mut set = InternalSet::<A::Item>::default();
                 set.reserve(A::size());
                 // Could this be done faster?
                 let arr_p = arr.as_mut_ptr() as *mut A::Item;
@@ -506,7 +508,7 @@ where
             }
             SparseSetU::Small { card, arr }
         } else {
-            let mut set = FxHashSet::<A::Item>::default();
+            let mut set = InternalSet::<A::Item>::default();
             for i in 0..vec_len {
                 set.insert(vec[i]);
             }
@@ -615,7 +617,7 @@ where
 
 pub enum SparseSetUIter<'a, A: Array> {
     Large {
-        set_iter: std::collections::hash_set::Iter<'a, A::Item>,
+        set_iter: hashbrown::hash_set::Iter<'a, A::Item>,
     },
     Small {
         card: usize,

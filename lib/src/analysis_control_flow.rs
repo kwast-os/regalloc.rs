@@ -1,7 +1,8 @@
 //! Performs control flow analysis.
 
 use log::{debug, info};
-use std::cmp::Ordering;
+use core::cmp::Ordering;
+use alloc::vec::Vec;
 
 use crate::analysis_main::AnalysisError;
 use crate::data_structures::{BlockIx, InstIx, Range, Set, TypedIxVec};

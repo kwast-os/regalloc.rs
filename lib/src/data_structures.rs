@@ -1,17 +1,20 @@
 //! Data structures for the whole crate.
 
-use rustc_hash::FxHashMap;
-use rustc_hash::FxHashSet;
 use smallvec::SmallVec;
 
-use std::cmp::Ordering;
-use std::collections::VecDeque;
-use std::fmt;
-use std::hash::Hash;
-use std::marker::PhantomData;
-use std::ops::Index;
-use std::ops::IndexMut;
-use std::slice::{Iter, IterMut};
+use core::cmp::Ordering;
+use alloc::collections::VecDeque;
+use core::fmt;
+use core::hash::Hash;
+use core::hash::BuildHasherDefault;
+use core::marker::PhantomData;
+use core::ops::Index;
+use core::ops::IndexMut;
+use core::slice::{Iter, IterMut};
+use alloc::vec::Vec;
+use alloc::string::String;
+use crate::alloc::string::ToString;
+use rustc_hash::FxHasher;
 
 use crate::{Function, RegUsageMapper};
 
@@ -30,23 +33,26 @@ pub type Queue<T> = VecDeque<T>;
 // scenario, which can make debugging code that uses it really confusing.  So
 // we use FxHashMap instead, as it *is* deterministic, and, allegedly, faster
 // too.
-pub type Map<K, V> = FxHashMap<K, V>;
+/// Type alias for a hashmap using the `fx` hash algorithm.
+pub type Map<K, V> = hashbrown::hash_map::HashMap<K, V, BuildHasherDefault<FxHasher>>;
 
 //=============================================================================
 // Sets of things
+
+pub type InternalSet<T> = hashbrown::hash_set::HashSet<T, BuildHasherDefault<FxHasher>>;
 
 // Same comment as above for FxHashMap.
 #[derive(Clone)]
 #[cfg_attr(feature = "enable-serde", derive(Serialize, Deserialize))]
 pub struct Set<T: Eq + Hash> {
-    set: FxHashSet<T>,
+    set: InternalSet<T>,
 }
 
 impl<T: Eq + Ord + Hash + Copy + fmt::Debug> Set<T> {
     #[inline(never)]
     pub fn empty() -> Self {
         Self {
-            set: FxHashSet::<T>::default(),
+            set: InternalSet::<T>::default(),
         }
     }
 
@@ -92,7 +98,7 @@ impl<T: Eq + Ord + Hash + Copy + fmt::Debug> Set<T> {
 
     #[inline(never)]
     pub fn intersect(&mut self, other: &Self) {
-        let mut res = FxHashSet::<T>::default();
+        let mut res = InternalSet::<T>::default();
         for item in self.set.iter() {
             if other.set.contains(item) {
                 res.insert(*item);
@@ -206,7 +212,7 @@ impl<T: Eq + Ord + Hash + Copy + fmt::Debug> fmt::Debug for Set<T> {
 }
 
 pub struct SetIter<'a, T> {
-    set_iter: std::collections::hash_set::Iter<'a, T>,
+    set_iter: hashbrown::hash_set::Iter<'a, T>,
 }
 impl<T: Eq + Hash> Set<T> {
     pub fn iter(&self) -> SetIter<T> {

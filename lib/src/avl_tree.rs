@@ -3,7 +3,8 @@
 //! AVL tree internals are public, so that backtracking.rs can do custom
 //! traversals of the tree as it wishes.
 
-use std::cmp::Ordering;
+use core::cmp::Ordering;
+use alloc::vec::Vec;
 
 //=============================================================================
 // Data structures for AVLTree

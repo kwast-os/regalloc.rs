@@ -2,8 +2,10 @@
 
 use log::{debug, info, log_enabled, Level};
 use smallvec::{smallvec, SmallVec};
-use std::cmp::min;
-use std::fmt;
+use core::cmp::min;
+use core::fmt;
+use alloc::vec::Vec;
+use crate::alloc::string::ToString;
 
 use crate::analysis_control_flow::CFGInfo;
 use crate::data_structures::{
@@ -708,10 +710,10 @@ pub fn calc_livein_and_liveout<F: Function>(
             sum_card_live_in += liveins[bix].card();
             sum_card_live_out += liveouts[bix].card();
         }
-        println!(
-            "QQQQ calc_LI/LO: num_evals {}, tot LI {}, tot LO {}",
-            num_evals, sum_card_live_in, sum_card_live_out
-        );
+        //println!(
+        //    "QQQQ calc_LI/LO: num_evals {}, tot LI {}, tot LO {}",
+        //    num_evals, sum_card_live_in, sum_card_live_out
+        //);
     }
 
     let ratio: f32 = (num_evals as f32) / ((if num_blocks == 0 { 1 } else { num_blocks }) as f32);
